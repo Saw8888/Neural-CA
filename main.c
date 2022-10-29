@@ -65,11 +65,6 @@ void fillGrid(){
  }
 }
 
-double randFloat(){
-	srand(time(NULL));
- return (double)rand() / (double)RAND_MAX ;
-}
-
 void cloneGrids(){
 	int x,y;
 	for(y=0;y<sizeY;y++){
@@ -83,7 +78,8 @@ void fillFilter(){
 	int x,y;
 	for(y=0;y<3;y++){
   for(x=0;x<3;x++){
-  	filter[y][x] = randFloat();
+  	srand(time(NULL));
+  	filter[y][x] = (double)rand() / (double)RAND_MAX;
   }
  }
 }
@@ -129,4 +125,3 @@ void main(int argc, char** argv){
  glutDisplayFunc(display);
  glutMainLoop();
 }
-
