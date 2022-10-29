@@ -13,16 +13,15 @@
 
 double grid[sizeY][sizeX];
 double newGrid[sizeY][sizeX];
-double filter[3][3] = {{0.68, -0.9,  0.68},
-                       {-0.9, -0.66, -0.9},
-                       {0.68, -0.9,   0.68}};
+
+double filter[3][3];
                        
 
 int width = 1000;
 int height = 500;
 
 double activation(double x){
-	return -1/pow(2, (0.6*pow(x, 2)))+1;
+	return x;
 }
 
 void CVFilter(){
@@ -57,13 +56,6 @@ int randRange(int min, int max){
  return min + (int) (rand() / (double) (RAND_MAX + 1) * (max - min + 1));
 }
 
-float randFloat(){
- float scale=RAND_MAX+1.;
- float base=rand()/scale;
- float fine=rand()/scale;
- return base+fine/scale;
-}
-
 void fillGrid(){
 	int x,y;
 	for(y=0;y<sizeY;y++){
@@ -73,12 +65,38 @@ void fillGrid(){
  }
 }
 
+double randFloat(){
+	srand(time(NULL));
+ return (double)rand() / (double)RAND_MAX ;
+}
+
 void cloneGrids(){
 	int x,y;
 	for(y=0;y<sizeY;y++){
   for(x=0;x<sizeX;x++){
   	grid[y][x] = newGrid[y][x];
   }
+ }
+}
+
+void fillFilter(){
+	int x,y;
+	for(y=0;y<3;y++){
+  for(x=0;x<3;x++){
+  	filter[y][x] = randFloat();
+  }
+ }
+}
+
+void printFilter(){
+	int x,y;
+	for(y=0;y<3;y++){
+  for(x=0;x<3;x++){
+	  printf("%f | ", filter[y][x]);
+  }
+  printf("\n");
+  printf("--------------------------------");
+  printf("\n");
  }
 }
 
@@ -101,6 +119,8 @@ void init(){
 
 void main(int argc, char** argv){ 
  fillGrid();
+ fillFilter();
+ printFilter();
  glutInit(&argc, argv);
  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
  glutInitWindowSize(width,height);
@@ -109,3 +129,4 @@ void main(int argc, char** argv){
  glutDisplayFunc(display);
  glutMainLoop();
 }
+
