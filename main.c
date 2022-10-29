@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include <math.h>
 #include <windows.h>
 #include <GL/glut.h>
@@ -11,21 +13,16 @@
 
 double grid[sizeY][sizeX];
 double newGrid[sizeY][sizeX];
-double filter[3][3] = {{1, 1, 1},
-                       {1, 9, 1},
-                       {1, 1, 1}};
+double filter[3][3] = {{0.68, -0.9,  0.68},
+                       {-0.9, -0.66, -0.9},
+                       {0.68, -0.9,   0.68}};
                        
 
 int width = 1000;
 int height = 500;
 
 double activation(double x){
-	if(x == 3 || x == 11 || x == 12){
-		return 1;
-	}
-	else{
-		return 0;
-	}
+	return -1/pow(2, (0.6*pow(x, 2)))+1;
 }
 
 void CVFilter(){
@@ -49,18 +46,29 @@ void drawGrid(){
  for(y=0;y<sizeY;y++){
   for(x=0;x<sizeX;x++){
   	rgb = grid[y][x];
-  	glColor3f(rgb,rgb,rgb);
+  	glColor3f(rgb,0,0);
   	glVertex2i((x*wallSize),(y*wallSize));
   }
  }
  glEnd();
 }
 
+int randRange(int min, int max){
+ return min + (int) (rand() / (double) (RAND_MAX + 1) * (max - min + 1));
+}
+
+float randFloat(){
+ float scale=RAND_MAX+1.;
+ float base=rand()/scale;
+ float fine=rand()/scale;
+ return base+fine/scale;
+}
+
 void fillGrid(){
 	int x,y;
 	for(y=0;y<sizeY;y++){
   for(x=0;x<sizeX;x++){
-  	grid[y][x] = randRange(0,1);
+  	grid[y][x] = randRange(-1,1);
   }
  }
 }
@@ -72,10 +80,6 @@ void cloneGrids(){
   	grid[y][x] = newGrid[y][x];
   }
  }
-}
-
-int randRange(int min, int max){
- return min + (int) (rand() / (double) (RAND_MAX + 1) * (max - min + 1));
 }
 
 void display(){
