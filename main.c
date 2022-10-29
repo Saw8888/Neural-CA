@@ -10,6 +10,7 @@
 #define wallSize 1
 
 double grid[sizeY][sizeX];
+double newGrid[sizeY][sizeX];
 double filter[3][3] = {{1, 1, 1},
                        {1, 9, 1},
                        {1, 1, 1}};
@@ -35,7 +36,7 @@ void CVFilter(){
   	cv = (grid[y][x]*filter[1][1]) + (grid[y][x-1]*filter[1][0]) + (grid[y][x+1]*filter[1][2])+
 			     (grid[y+1][x]*filter[2][1]) + (grid[y+1][x-1]*filter[2][0]) + (grid[y+1][x+1]*filter[2][2])+
 			     (grid[y-1][x]*filter[0][1]) + (grid[y-1][x-1]*filter[0][0]) + (grid[y-1][x+1]*filter[0][2]);
-			grid[y][x] = activation(cv);
+			newGrid[y][x] = activation(cv);
   }
  }
 }
@@ -64,6 +65,15 @@ void fillGrid(){
  }
 }
 
+void cloneGrids(){
+	int x,y;
+	for(y=0;y<sizeY;y++){
+  for(x=0;x<sizeX;x++){
+  	grid[y][x] = newGrid[y][x];
+  }
+ }
+}
+
 int randRange(int min, int max){
  return min + (int) (rand() / (double) (RAND_MAX + 1) * (max - min + 1));
 }
@@ -72,6 +82,7 @@ void display(){
  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
  //---------------------Proccess--------------------
  CVFilter();
+ cloneGrids();
  //-----------------------Draw----------------------
  drawGrid();
  //-------------------------------------------------
