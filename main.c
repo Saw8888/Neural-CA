@@ -15,7 +15,6 @@ double grid[sizeY][sizeX];
 double newGrid[sizeY][sizeX];
 
 double filter[3][3];
-                       
 
 int width = 1000;
 int height = 500;
@@ -76,9 +75,8 @@ void cloneGrids(){
 
 void fillFilter(){
 	int x,y;
-	for(y=0;y<3;y++){
-  for(x=0;x<3;x++){
-  	srand(time(NULL));
+	for(y=0;y<=3;y++){
+  for(x=0;x<=3;x++){
   	filter[y][x] = (double)rand() / (double)RAND_MAX;
   }
  }
@@ -114,6 +112,7 @@ void init(){
 }
 
 void main(int argc, char** argv){ 
+ srand(time(NULL)); 
  fillGrid();
  fillFilter();
  printFilter();
